@@ -1,12 +1,10 @@
 'use strict';
 
 function getSchema(path, root) {
-  if (path === '' || path === '/') {
-    return root;
-  }
-  if (!path) {
+  if (!path || path === '/') {
     return null;
   }
+
   let schema = root;
   const pathArr = path.split('/').filter(el => !!el);
   for (const key of pathArr) {
@@ -42,10 +40,11 @@ module.exports = options => {
   const { convertType } = options;
 
   return async function validate(ctx, next) {
-    const schema = getSchema(this.request.path, ctx.schema);
+    const schema = getSchema(ctx.request.path, ctx.schema);
     if (!schema) {
       return await next();
     }
+    console.log(schema);
 
     if (schema.validate) {
       if (convertType) {
