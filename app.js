@@ -5,15 +5,15 @@ const Ajv = require('ajv');
 const fastJson = require('fast-json-stringify');
 
 module.exports = app => {
+  // load schemas
   const ajv = new Ajv();
-
   const dir = path.join(app.config.baseDir, 'app/schema');
   app.loader.loadToContext(dir, 'schema', {
     inject: app,
     initializer(model) {
       for (const key of Object.getOwnPropertyNames(model)) {
         const { request, response } = model[key];
-        const newModel = {};
+        const newModel = { rowData: model[key] };
         if (request) {
           newModel.validate = ajv.compile({
             type: 'object',
@@ -29,4 +29,7 @@ module.exports = app => {
     },
     caseStyle: 'lower',
   });
+
+  // load middleware
+  app.config.appMiddleware.unshift('validate');
 };
