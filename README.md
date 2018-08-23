@@ -9,12 +9,12 @@
 
 [npm-image]: https://img.shields.io/npm/v/egg-validate-middleware.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/egg-validate-middleware
-[travis-image]: https://img.shields.io/travis/eggjs/egg-validate-middleware.svg?style=flat-square
-[travis-url]: https://travis-ci.org/eggjs/egg-validate-middleware
-[codecov-image]: https://img.shields.io/codecov/c/github/eggjs/egg-validate-middleware.svg?style=flat-square
-[codecov-url]: https://codecov.io/github/eggjs/egg-validate-middleware?branch=master
-[david-image]: https://img.shields.io/david/eggjs/egg-validate-middleware.svg?style=flat-square
-[david-url]: https://david-dm.org/eggjs/egg-validate-middleware
+[travis-image]: https://img.shields.io/travis/LzxHahaha/egg-validate-middleware.svg?style=flat-square
+[travis-url]: https://travis-ci.org/LzxHahaha/egg-validate-middleware
+[codecov-image]: https://img.shields.io/codecov/c/github/LzxHahaha/egg-validate-middleware.svg?style=flat-square
+[codecov-url]: https://codecov.io/github/LzxHahaha/egg-validate-middleware?branch=master
+[david-image]: https://img.shields.io/david/LzxHahaha/egg-validate-middleware.svg?style=flat-square
+[david-url]: https://david-dm.org/LzxHahaha/egg-validate-middleware
 [snyk-image]: https://snyk.io/test/npm/egg-validate-middleware/badge.svg?style=flat-square
 [snyk-url]: https://snyk.io/test/npm/egg-validate-middleware
 [download-image]: https://img.shields.io/npm/dm/egg-validate-middleware.svg?style=flat-square
@@ -56,7 +56,7 @@ see [config/config.default.js](config/config.default.js) for more detail.
 
 ## Questions & Suggestions
 
-Please open an issue [here](https://github.com/eggjs/egg/issues).
+Please open an issue [here](https://github.com/LzxHahaha/egg-validate-middleware/issues).
 
 ## License
 
