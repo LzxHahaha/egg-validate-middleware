@@ -11,7 +11,7 @@ module.exports = app => {
   app.loader.loadToApp(dir, 'schema', {
     inject: app,
     initializer(model) {
-      const { formatResponse } = app.config.validateMiddleware;
+      const res = {};
       for (const key of Object.getOwnPropertyNames(model)) {
         const { request, response } = model[key];
         const newModel = { rawData: model[key] };
@@ -22,11 +22,13 @@ module.exports = app => {
           });
         }
         if (response) {
-          newModel.stringify = fastJson(formatResponse ? formatResponse(response) : response);
+          const { formatResponse } = app.config.validateMiddleware;
+          const format = formatResponse ? formatResponse(response) : response;
+          newModel.stringify = fastJson(format);
         }
-        model[key] = newModel;
+        res[key] = newModel;
       }
-      return model;
+      return res;
     },
     caseStyle: 'lower',
   });

@@ -15,7 +15,7 @@ function convert(obj, schema) {
       // type can only be string or array
       const typeSet = new Set(type);
       typeSet.delete('string');
-      if (type.size === 1) {
+      if (typeSet.size === 1) {
         canConvert = true;
         type = Array.from(typeSet)[0];
       }
@@ -57,17 +57,13 @@ module.exports = (options = {}) => {
       });
 
       if (!valid) {
-        const error = new Error('Validation Failed');
-        error.errors = valid.errors;
+        const error = new Error('JSON schema validation failed.');
+        error.errors = validate.errors;
         throw error;
       }
     }
 
     const data = await next();
-    if (stringify) {
-      ctx.body = stringify(data);
-      return ctx.body;
-    }
-    return data;
+    ctx.body = stringify ? stringify(data) : JSON.stringify(data);
   };
 };
