@@ -4,7 +4,8 @@ const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
   async index() {
-    this.ctx.body = 'hi, ' + this.app.plugins.validateMiddleware.name;
+    const { name, age } = this.ctx.query;
+    return { code: 200, data: { name, age, undefinedKey: 'value' } };
   }
 }
 

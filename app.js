@@ -8,12 +8,13 @@ module.exports = app => {
   // load schemas
   const ajv = new Ajv();
   const dir = path.join(app.config.baseDir, 'app/schema');
-  app.loader.loadToContext(dir, 'schema', {
+  app.loader.loadToApp(dir, 'schema', {
     inject: app,
     initializer(model) {
+      const { formatResponse } = app.config.validateMiddleware;
       for (const key of Object.getOwnPropertyNames(model)) {
         const { request, response } = model[key];
-        const newModel = { rowData: model[key] };
+        const newModel = { rawData: model[key] };
         if (request) {
           newModel.validate = ajv.compile({
             type: 'object',
@@ -21,7 +22,7 @@ module.exports = app => {
           });
         }
         if (response) {
-          newModel.stringify = fastJson(response);
+          newModel.stringify = fastJson(formatResponse ? formatResponse(response) : response);
         }
         model[key] = newModel;
       }
@@ -29,7 +30,4 @@ module.exports = app => {
     },
     caseStyle: 'lower',
   });
-
-  // load middleware
-  app.config.appMiddleware.unshift('validate');
 };

@@ -1,65 +1,61 @@
 'use strict';
 
-function getSchema(path, root) {
-  if (!path || path === '/') {
-    return null;
-  }
-
-  let schema = root;
-  const pathArr = path.split('/').filter(el => !!el);
-  for (const key of pathArr) {
-    if (!schema[key]) {
-      return null;
-    }
-    schema = schema[key];
-  }
-  return schema;
-}
-
 function convert(obj, schema) {
   for (const key of Object.getOwnPropertyNames(obj)) {
-    if (!schema[key]) {
+    if (!schema.properties[key]) {
       continue;
     }
-    const type = schema[key].type;
+    let type = schema.properties[key].type;
+
+    let canConvert = false;
     // convert only when there is only one type define
-    if (typeof type === 'string' && type !== 'string') {
-      if (type === 'number' || type === 'integer') {
-        const value = +obj[key];
-        if (!isNaN(value)) {
-          obj[key] = type === 'integer' ? Math.floor(value) : value;
-        }
-      } else if (type === 'boolean') {
-        obj[key] = obj[key] === 'true';
+    if (typeof type === 'string') {
+      canConvert = type !== 'string';
+    } else {
+      // type can only be string or array
+      const typeSet = new Set(type);
+      typeSet.delete('string');
+      if (type.size === 1) {
+        canConvert = true;
+        type = Array.from(typeSet)[0];
+      }
+    }
+
+    if (canConvert && (type === 'number' || type === 'integer')) {
+      const value = +obj[key];
+      if (!isNaN(value)) {
+        obj[key] = type === 'integer' ? Math.floor(value) : value;
       }
     }
   }
 }
 
-module.exports = options => {
-  const { convertType } = options;
+module.exports = (options = {}) => {
+  const { convertNumber = true, schema } = options;
 
   return async function validate(ctx, next) {
-    const schema = getSchema(ctx.request.path, ctx.schema);
     if (!schema) {
       return await next();
     }
-    console.log(schema);
 
-    if (schema.validate) {
-      if (convertType) {
-        if (schema.rowData.request) {
-          convert(ctx.query, ctx.rowData.request);
+    const { rawData, validate, stringify } = schema;
+
+    if (validate) {
+      if (convertNumber && rawData.request) {
+        if (rawData.request.query) {
+          convert(ctx.query, rawData.request.query);
         }
-        if (schema.rowData.params) {
-          convert(ctx.params, ctx.rowData.params);
+        if (rawData.request.params) {
+          convert(ctx.params, rawData.request.params);
         }
       }
-      const valid = schema.validate({
+
+      const valid = validate({
         query: ctx.query,
         body: ctx.request.body,
         params: ctx.params,
       });
+
       if (!valid) {
         const error = new Error('Validation Failed');
         error.errors = valid.errors;
@@ -68,10 +64,10 @@ module.exports = options => {
     }
 
     const data = await next();
-    if (!ctx.body && schema.stringify) {
-      ctx.body = schema.stringify(data);
-    } else {
-      return data;
+    if (stringify) {
+      ctx.body = stringify(data);
+      return ctx.body;
     }
+    return data;
   };
 };

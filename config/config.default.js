@@ -7,4 +7,14 @@
  */
 exports.validateMiddleware = {
   convertType: true,
+  formatResponse(data) {
+    return {
+      type: 'object',
+      properties: {
+        code: { type: 'number' },
+        data: { type: data.type },
+        message: { type: 'string' },
+      },
+    };
+  },
 };

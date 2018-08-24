@@ -14,10 +14,10 @@ describe('test/validate-middleware.test.js', () => {
   after(() => app.close());
   afterEach(mock.restore);
 
-  it('should GET /', () => {
+  it('/home/:address', () => {
     return app.httpRequest()
-      .get('/')
-      .expect('hi, validateMiddleware')
+      .get('/home/address?name=name&age=12')
+      .expect('{"code":200,"data":{"name":"name","age":12}}')
       .expect(200);
   });
 });
