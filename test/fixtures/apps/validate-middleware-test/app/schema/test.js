@@ -28,11 +28,13 @@ module.exports = {
   },
 
   post: {
-    body: {
-      type: 'object',
-      properties: {
-        name: { type: 'string' },
-        age: { type: 'number' },
+    request: {
+      body: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          age: { type: 'number' },
+        },
       },
     },
   },
