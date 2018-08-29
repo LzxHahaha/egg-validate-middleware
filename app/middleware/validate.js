@@ -35,6 +35,7 @@ module.exports = (options = {}) => {
 
   return async function validate(ctx, next) {
     if (!schema) {
+      ctx.logger.warn(`No schema for ${ctx.url}`);
       return await next();
     }
 
@@ -58,12 +59,16 @@ module.exports = (options = {}) => {
 
       if (!valid) {
         const error = new Error('JSON schema validation failed.');
+        error.name = 'EggValidateMiddlewareError';
         error.errors = validate.errors;
         throw error;
       }
     }
 
     const data = await next();
+    if (stringify && data === undefined) {
+      ctx.logger.warn('Controller return nothing. (Ignore this message if you know what you are doing)');
+    }
     ctx.body = stringify ? stringify(data) : JSON.stringify(data);
   };
 };
