@@ -80,6 +80,12 @@ describe('test/validate-middleware.test.js', () => {
       .expect('{"code":200,"data":{"value":"12"}}')
       .expect(200);
   });
+
+  it('no return for response stringify', () => {
+    return app.httpRequest()
+      .get('/test/noReturn')
+      .expect(500);
+  });
 });
 
 describe('without formatResponse', () => {

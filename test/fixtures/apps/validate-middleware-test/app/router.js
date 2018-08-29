@@ -23,4 +23,6 @@ module.exports = app => {
   router.get('/test/wrongNumber', validate({ schema: schema.test.wrongNumber }), controller.test.wrongNumber);
 
   router.get('/test/noConvert', validate({ schema: schema.test.noConvert, convertNumber: false }), controller.test.noConvert);
+
+  router.get('/test/noReturn', validate({ schema: schema.test.response }), controller.test.noReturn);
 };

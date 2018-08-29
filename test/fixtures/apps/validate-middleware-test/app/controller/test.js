@@ -49,6 +49,11 @@ class TestController extends Controller {
     const { value } = this.ctx.query;
     return { code: 200, data: { value } };
   }
+
+  async noReturn() {
+    console.log('noReturn');
+    // forget return value
+  }
 }
 
 module.exports = TestController;

@@ -67,7 +67,7 @@ module.exports = (options = {}) => {
 
     const data = await next();
     if (stringify && data === undefined) {
-      ctx.logger.warn('Controller return nothing. (Ignore this message if you know what you are doing)');
+      ctx.logger.warn('Controller return undefined. (Ignore this message if you know what you are doing)');
     }
     ctx.body = stringify ? stringify(data) : JSON.stringify(data);
   };
