@@ -125,7 +125,8 @@ module.exports = {
 // app/controller/home.js
 class HomeController extends Controller {
   async index() {
-    // ...
+    // return data, no need to set ctx.body
+    return 'somthing';
   }
 }
 ```
