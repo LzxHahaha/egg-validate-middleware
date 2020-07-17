@@ -15,7 +15,7 @@
     "json schema"
   ],
   "dependencies": {
-    "ajv": "^6.5.3",
+    "ajv": "^6.12.3",
     "fast-json-stringify": "^1.7.1"
   },
   "devDependencies": {
