@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "ajv": "^6.5.3",
-    "fast-json-stringify": "^1.7.1"
+    "fast-json-stringify": "^3.0.0"
   },
   "devDependencies": {
     "autod": "^3.0.0",
